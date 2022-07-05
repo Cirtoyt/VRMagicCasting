@@ -57,15 +57,15 @@ public class CXRControllerVisual : MonoBehaviour
         InputDevices.GetDevicesWithCharacteristics(targetControllerCharacteristics, devices);
 
         // Debug print all found devices
-        foreach (var device in devices)
-        {
-            Debug.Log(device.name + device.characteristics);
-        }
+        //foreach (var device in devices)
+        //{
+        //    Debug.Log(device.name + "\n" + device.characteristics);
+        //}
 
         if (devices.Count > 0)
         {
             targetDevice = devices[0];
-            GameObject prefab = controllerPrefabs.Find(controller => controller.name == targetDevice.name);
+            GameObject prefab = controllerPrefabs.Find(controller => controller.name.Replace(" - Left", "").Replace(" - Right", "") == targetDevice.name.Replace(" OpenXR", ""));
             if (prefab)
             {
                 spawnedControllerModel = Instantiate(prefab, transform);
@@ -75,10 +75,6 @@ public class CXRControllerVisual : MonoBehaviour
                 Debug.LogWarning("Did not find corresponding controller model. Spawning default model");
                 spawnedControllerModel = Instantiate(controllerPrefabs[0], transform);
             }
-        }
-        else
-        {
-            Debug.LogWarning("Could not find device with desired properties: " + targetControllerCharacteristics + " to spawn the matching controller model");
         }
     }
 
